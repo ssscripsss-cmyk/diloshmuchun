@@ -3,8 +3,8 @@
    ========================================================= */
 
 // --- 1. CONFIGURATION & DATA ---
-// Start Date: 31 May (Year set to 2025 by default, change if needed)
-const START_DATE = new Date('2025-05-31T00:00:00');
+// Start Date: 31 May (2026)
+const START_DATE = new Date('2026-05-31T00:00:00');
 
 // Memory Data (Dilosh & You)
 const MEMORIES = {
@@ -12,28 +12,28 @@ const MEMORIES = {
     badge: '🪐 KOINOT MARKAZI',
     title: 'Dilosh — Mening Butun Olamim 💖',
     caption: 'Mening eng yorqin yulduzim',
-    image: 'assets/dilosh_main.jpg',
+    image: 'assets/dilosh_main.png',
     desc: 'Diloshim, sen mening hayotimga kirib kelganingdan beri har bir kunim quvonchga, mehrga va maʼnoga toʻldi. Sening birgina tabassuming butun dunyo tashvishlarini unutishga yetadi. Seni cheksiz seviraman!',
   },
   1: {
     badge: '🌟 XOTIRA #1 • 31-MAY',
     title: 'Bizning Ilk Tanishgan Kunimiz ✨',
     caption: '31-May • Taqdir sovgʻasi',
-    image: 'assets/photo1.jpg',
+    image: 'assets/photo1.png',
     desc: '31-May — hayotimdagi eng qadrli va unutilmas sanalardan biri. Aynan shu kundan boshlab yuragimda sen uchun maxsus bir olam paydo boʻldi. Bu shunchaki tanishuv emas, haqiqiy moʻjiza edi!',
   },
   2: {
-    badge: '📸 XOTIRA #2 • BIRINCHI UCHRASHUV',
+     badge: '📸 XOTIRA #2 • BIRINCHI UCHRASHUV',
     title: 'Sening Shirin Tabassuming 🥰',
     caption: 'Koʻzlaringdagi nur',
-    image: 'assets/photo2.jpg',
+    image: 'assets/photo2.png',
     desc: 'Seni ilk bor koʻrganimda koʻzlaringdagi samimiylik va yuzingdagi mayin tabassum meni butunlay maftun etgan. Oʻsha lahza vaqt toʻxtab qolgandek tuyulgan edi...',
   },
   3: {
     badge: '💖 XOTIRA #3 • SEVGI SABABLARI',
     title: 'Nega Seni Butun Vujudim Bilan Sevaman?',
     caption: 'Chunki sen yagonasan',
-    image: 'assets/photo3.jpg',
+    image: 'assets/photo3.png',
     desc: 'Sening samimiy qalbing, erkaliklaring, gʻamxoʻrliging va menga boʻlgan ishonching uchun seni juda yaxshi koʻraman. Sen bilan oʻzimni dunyodagi eng baxtli insondek his qilaman.',
   },
   4: {
@@ -47,14 +47,14 @@ const MEMORIES = {
     badge: '✨ XOTIRA #5 • KELAJAK & ORZULAR',
     title: 'Bizning Shirin Orzularimiz 🏡✈️',
     caption: 'Kelajak sari birga',
-    image: 'assets/photo5.jpg',
+    image: 'assets/photo5.png',
     desc: 'Oldimizda hali qancha goʻzal kunlar, sayohatlar, unutilmas lahzalar va birgalikdagi orzularimiz kutmoqda. Har doim qoʻlingdan tutib, birga boʻlishga vaʼda beraman.',
   },
   6: {
     badge: '💫 XOTIRA #6 • MAXSUS VAʼDA',
     title: 'Mening Doimiy Vaʼdam 💍',
     caption: 'Abadiy sadoqat',
-    image: 'assets/photo6.jpg',
+    image: 'assets/photo6.png',
     desc: 'Qanday kun boʻlishidan qatʼi nazar — xoh quvonchli, xoh qiyin — men har doim sening yoningda, sening tayanching va suyanching boʻlaman, Diloshim!',
   }
 };
@@ -156,53 +156,53 @@ class AmbientLoveMusic {
       [349.23, 440.00, 523.25, 659.25], // Fmaj7
       [220.00, 261.63, 329.63, 392.00], // Am7
       [196.00, 246.94, 293.66, 392.00], // G
-      [261.63, 329.63, 392.00, 493.88]  // Cmaj7
+       [261.63, 329.63, 392.00, 493.88]  // Cmaj7
     ];
 
-    let chordIndex = 0;
+    let cycle = 0;
     this.playChord(chords[0], 5);
 
     this.interval = setInterval(() => {
       if (!this.isPlaying) return;
-      chordIndex = (chordIndex + 1) % chords.length;
-      this.playChord(chords[chordIndex], 5);
+      cycle++;
+      // Every 3rd cycle, weave in a Turkish (Hicaz maqam) melodic phrase
+      if (cycle % 3 === 0) {
+        this.playTurkishPhrase();
+      } else {
+        this.playChord(chords[cycle % chords.length], 5);
+      }
     }, 4500);
+    }
+
+  // D Hicaz maqam phrase (D, Eb, F#, G, A, Bb, C, D) over a low D drone
+  playTurkishPhrase() {
+    if (!this.ctx || !this.isPlaying) return;
+
+    const drone = [146.83, 293.66]; // low D + D octave
+    this.playChord(drone, 6.5);
+
+    const melody = [369.99, 440.00, 466.16, 392.00, 311.13, 293.66];
+    melody.forEach((note, i) => {
+      setTimeout(() => {
+        if (!this.isPlaying) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+               osc.frequency.setValueAtTime(note, this.ctx.currentTime);
+        gain.gain.setValueAtTime(0, this.ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.05, this.ctx.currentTime + 0.15);
+        gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.9);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + 0.9);
+      }, i * 480);
+    });
   }
 
   stop() {
     this.isPlaying = false;
     if (this.interval) clearInterval(this.interval);
-  }
-
-  playSparkleSound() {
-    if (!this.ctx) return;
-    const notes = [523.25, 659.25, 783.99, 1046.50];
-    notes.forEach((note, i) => {
-      setTimeout(() => {
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(note, this.ctx.currentTime);
-        gain.gain.setValueAtTime(0.06, this.ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.6);
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
-        osc.start();
-        osc.stop(this.ctx.currentTime + 0.6);
-      }, i * 80);
-    });
-  }
-}
-
-const synthMusic = new AmbientLoveMusic();
-const bgAudio = document.getElementById('bg-audio');
-let musicPlaying = false;
-
-function toggleMusic() {
-  const musicWave = document.getElementById('music-wave');
-  const musicIcon = document.getElementById('music-icon');
-
-  if (!musicPlaying) {
     // Try to play audio file or fallback to synth
     if (bgAudio && bgAudio.src && !bgAudio.error) {
       bgAudio.play().then(() => {
@@ -231,15 +231,15 @@ const canvas = document.getElementById('universe');
 const ctx = canvas.getContext('2d');
 
 let width, height;
-let stars = [];
-let shootingStars = [];
+ const musicIcon = document.getElementById('music-icon');
 
-function resizeCanvas() {
-  width = canvas.width = window.innerWidth;
-  height = canvas.height = window.innerHeight;
-  createStars();
-}
-
+  if (!musicPlaying) {
+    // Try to play the real audio file (from the <source> child) or fall back to synth
+    const hasRealFile = bgAudio && bgAudio.querySelector('source') && !bgAudio.error;
+    if (hasRealFile) {
+      bgAudio.play().then(() => {
+        musicPlaying = true;
+      }).catch(() => {
 window.addEventListener('resize', resizeCanvas);
 
 function createStars() {
@@ -287,21 +287,21 @@ function drawUniverse() {
     star.alpha += Math.sin(Date.now() * star.speed) * 0.02;
     const currentAlpha = Math.max(0.1, Math.min(1, star.alpha));
 
-    ctx.beginPath();
-    ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-    ctx.fillStyle = star.color;
-    ctx.globalAlpha = currentAlpha;
-    ctx.shadowBlur = star.size * 4;
-    ctx.shadowColor = star.color;
-    ctx.fill();
-    ctx.shadowBlur = 0;
-  });
+   }
 
-  // Draw shooting stars
-  for (let i = shootingStars.length - 1; i >= 0; i--) {
-    const s = shootingStars[i];
-    ctx.globalAlpha = s.alpha;
-    ctx.strokeStyle = '#ffffff';
+function spawnShootingStar() {
+  if (shootingStars.length < 6 && Math.random() < 0.045) {
+    shootingStars.push({
+      x: Math.random() * width,
+      y: Math.random() * height * 0.6,
+      len: Math.random() * 140 + 80,
+      speed: Math.random() * 8 + 6,
+      angle: Math.PI / 4 + (Math.random() * 0.3 - 0.15),
+      alpha: 1,
+      decay: 0.006
+    });
+  }
+}
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(s.x, s.y);
@@ -369,16 +369,16 @@ function openMemory(id) {
 
   const img = document.getElementById('modal-img');
   const placeholder = document.getElementById('photo-placeholder');
+const complimentBtn = document.getElementById('compliment-btn');
+const reasonsBtn = document.getElementById('reasons-btn');
+const musicToggle = document.getElementById('music-toggle');
+const qrModal = document.getElementById('qr-modal');
+const qrClose = document.getElementById('qr-close');
+const shareLinkInput = document.getElementById('share-link-input');
+const copyLinkBtn = document.getElementById('copy-link-btn');
 
-  img.style.display = 'block';
-  placeholder.style.display = 'none';
-  img.src = data.image;
-
-  memoryModal.classList.remove('hidden');
-}
-
-// Memory Star Clicks
-document.querySelectorAll('.memory-star').forEach(star => {
+// Start Button
+enterBtn.addEventListener('click', () => {
   star.addEventListener('click', () => {
     const id = star.getAttribute('data-id');
     openMemory(id);
@@ -388,59 +388,59 @@ document.querySelectorAll('.memory-star').forEach(star => {
 // Planet Dilosh Click
 document.getElementById('planet-dilosh').addEventListener('click', () => {
   openMemory('planet');
+// Music toggle button
+musicToggle.addEventListener('click', toggleMusic);
+
+// --- QR Code: scanning it opens this exact site ---
+let qrRendered = false;
+
+function openQrModal() {
+  const shareUrl = window.location.origin + window.location.pathname;
+  shareLinkInput.value = shareUrl;
+
+  if (!qrRendered) {
+    new QRCode(document.getElementById('qr-image'), {
+      text: shareUrl,
+      width: 190,
+height: 190,
+      colorDark: '#000000',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+    qrRendered = true;
+  }
+
+  qrModal.classList.remove('hidden');
+}
+
+['welcome-qr-btn', 'qr-modal-btn', 'qr-bottom-btn'].forEach(id => {
+  const btn = document.getElementById(id);
+  if (btn) btn.addEventListener('click', openQrModal);
 });
 
-// Close Modals
-modalClose.addEventListener('click', () => {
-  memoryModal.classList.add('hidden');
+qrClose.addEventListener('click', () => {
+  qrModal.classList.add('hidden');
 });
 
-memoryModal.addEventListener('click', (e) => {
+qrModal.addEventListener('click', (e) => {
   if (e.target.classList.contains('modal-backdrop')) {
-    memoryModal.classList.add('hidden');
+   qrModal.classList.add('hidden');
   }
 });
 
-// Like Button in Modal
-document.getElementById('like-memory-btn').addEventListener('click', function() {
-  synthMusic.playSparkleSound();
-  this.innerHTML = '<span>💖 Diloshim Sevaman! 💖</span>';
-  this.style.background = '#ec4899';
-  setTimeout(() => {
-    this.innerHTML = '<span class="heart">❤️</span> <span id="like-count">Cheksiz Sevgi</span>';
-    this.style.background = '';
-  }, 2000);
+copyLinkBtn.addEventListener('click', () => {
+  navigator.clipboard.writeText(shareLinkInput.value).then(() => {
+    const original = copyLinkBtn.textContent;
+    copyLinkBtn.textContent = 'Nusxalandi ✅';
+    setTimeout(() => {
+      copyLinkBtn.textContent = original;
+    }, 2000);
+  });
 });
 
-// Romantic Letter Modal
-letterBtn.addEventListener('click', () => {
-  synthMusic.playSparkleSound();
-  letterModal.classList.remove('hidden');
-});
-
-letterClose.addEventListener('click', () => {
-  letterModal.classList.add('hidden');
-});
-
-letterModal.addEventListener('click', (e) => {
-  if (e.target.classList.contains('modal-backdrop')) {
-    letterModal.classList.add('hidden');
-  }
-});
-
-// Compliment Button
-complimentBtn.addEventListener('click', () => {
-  synthMusic.playSparkleSound();
-  const randomComp = COMPLIMENTS[Math.floor(Math.random() * COMPLIMENTS.length)];
-  showWishToast('Shirin Soʻz Diloshga 🌸', randomComp);
-});
-
-// Reasons Button
-let reasonIndex = 0;
-reasonsBtn.addEventListener('click', () => {
-  synthMusic.playSparkleSound();
-  const reason = REASONS[reasonIndex % REASONS.length];
-  reasonIndex++;
+  // Open Memory Function
+function openMemory(id) {
+  const data = MEMORIES[id];
   showWishToast('Seni Sevish Sababim 💖', reason);
 });
 

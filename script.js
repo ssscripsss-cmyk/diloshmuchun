@@ -466,3 +466,50 @@ setInterval(() => {
     showWishToast('Yulduz Uchdi! 🌠', wishes[Math.floor(Math.random() * wishes.length)]);
   }
 }, 30000);
+// --- QR CODE & SHARE ENGINE ---
+const qrModal = document.getElementById('qr-modal');
+const qrModalBtn = document.getElementById('qr-modal-btn');
+const welcomeQrBtn = document.getElementById('welcome-qr-btn');
+const qrBottomBtn = document.getElementById('qr-bottom-btn');
+const qrClose = document.getElementById('qr-close');
+const qrImage = document.getElementById('qr-image');
+const shareLinkInput = document.getElementById('share-link-input');
+const copyLinkBtn = document.getElementById('copy-link-btn');
+
+function openQRModal() {
+  synthMusic.playSparkleSound();
+  const currentUrl = window.location.href;
+  shareLinkInput.value = currentUrl;
+
+  // Generate QR Code via free API
+  const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(currentUrl)}&color=0f172a&bgcolor=ffffff`;
+  qrImage.src = qrApiUrl;
+
+  qrModal.classList.remove('hidden');
+}
+
+[qrModalBtn, welcomeQrBtn, qrBottomBtn].forEach(btn => {
+  if (btn) btn.addEventListener('click', openQRModal);
+});
+
+if (qrClose) {
+  qrClose.addEventListener('click', () => qrModal.classList.add('hidden'));
+}
+
+if (qrModal) {
+  qrModal.addEventListener('click', (e) => {
+    if (e.target.classList.contains('modal-backdrop')) {
+      qrModal.classList.add('hidden');
+    }
+  });
+}
+
+if (copyLinkBtn) {
+  copyLinkBtn.addEventListener('click', () => {
+    shareLinkInput.select();
+    navigator.clipboard.writeText(shareLinkInput.value).then(() => {
+      copyLinkBtn.textContent = 'Nusxalandi! ⚡';
+      setTimeout(() => { copyLinkBtn.textContent = 'Nusxalash 📋'; }, 2000);
+    });
+  });
+}

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dilosh uchun Maxsus Galaktika ✨</title>
+  <meta name="description" content="Dilosh uchun maxsus yaratilgan xotiralar galaktikasi va sevgi olami 💖">
+  <meta property="og:title" content="Dilosh uchun Maxsus Galaktika ✨">
+  <meta property="og:description" content="31-Maydan beri davom etayotgan cheksiz sevgi bilan ❤️">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,400;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Background Canvas for Stars & Nebula -->
+  <canvas id="universe"></canvas>
+
+  <!-- Welcome / Lock Screen -->
+  <div id="welcome-screen" class="screen active">
+    <div class="welcome-card glass-panel">
+      <div class="planet-avatar-container">
+        <div class="mini-planet">
+          <div class="ring"></div>
+          <div class="glow"></div>
+        </div>
+        <div class="sparkles">✨ 💖 ✨</div>
+      </div>
+      <h1 class="welcome-title">Dilosh uchun Maxsus Koinot</h1>
+      <p class="welcome-subtitle">Koinotdagi millionlab yulduzlar orasida eng yorqini va eng goʻzali — bu sensan...</p>
+      
+      <div class="welcome-interactive">
+        <p class="instruction-text">Ushbu sehrli olamga kirishga tayyormisan?</p>
+        <button id="enter-btn" class="glow-btn">
+          <span>Galaktikani Ochish 🚀✨</span>
+          <div class="btn-glow"></div>
+        </button>
+      </div>
+
+      <div class="welcome-footer">
+        <span>31-Maydan beri davom etayotgan cheksiz sevgi bilan ❤️</span>
+      </div>
+
+      <!-- Quick QR trigger on welcome screen -->
+      <div class="welcome-qr-link">
+        <button id="welcome-qr-btn" class="qr-chip-btn">
+          <span>📲 QR Kod orqali kirish / ulashish</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Galaxy Explorer UI -->
+  <main id="main-content" class="screen hidden">
+    <!-- Top Header Bar -->
+    <header class="top-nav glass-panel">
+      <div class="logo">
+        <span class="heart-icon">💖</span>
+        <span class="logo-text">Dilosh & Men</span>
+      </div>
+
+      <!-- Live Relationship Timer -->
+      <div class="timer-container" title="31-Maydan beri birgamiz">
+        <div class="timer-label">Biz birgamiz:</div>
+        <div class="timer-display" id="love-timer">
+          <span class="time-unit"><strong id="days">0</strong> <small>kun</small></span>
+          <span class="sep">:</span>
+          <span class="time-unit"><strong id="hours">00</strong> <small>soat</small></span>
+          <span class="sep">:</span>
+          <span class="time-unit"><strong id="minutes">00</strong> <small>daq</small></span>
+          <span class="sep">:</span>
+          <span class="time-unit"><strong id="seconds">00</strong> <small>son</small></span>
+        </div>
+      </div>
+
+      <!-- Music, QR & Controls -->
+      <div class="nav-controls">
+        <button id="music-toggle" class="icon-btn" title="Musiqa">
+          <span id="music-icon">🎵</span>
+          <div class="music-wave" id="music-wave">
+            <span></span><span></span><span></span>
+          </div>
+        </button>
+        <button id="qr-modal-btn" class="icon-btn" title="QR Kod">
+          <span>📲</span>
+        </button>
+        <button id="letter-btn" class="icon-btn special-btn" title="Romantik Xat">
+          <span>💌</span>
+          <span class="badge">Xat</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Universe Hint -->
+    <div class="galaxy-hint glass-pill" id="galaxy-hint">
+      <span>🌌 Sayyora va Yulduzlarni bosing — har birida bizning maxsus xotiralarimiz bor!</span>
+    </div>
+
+    <!-- Center Interactive Planet -->
+    <div class="celestial-center" id="planet-dilosh" data-memory="planet">
+      <div class="glowing-orb planet-body">
+        <div class="planet-crater c1"></div>
+        <div class="planet-crater c2"></div>
+        <div class="planet-clouds"></div>
+        <div class="planet-ring-outer"></div>
+      </div>
+      <div class="planet-label">
+        <span class="planet-name">🪐 Dilosh Sayyorasi</span>
+        <span class="planet-sub">Mening butun olamim 💖</span>
+      </div>
+    </div>
+
+    <!-- Interactive Stars Coordinates in Galaxy -->
+    <div class="stars-constellation" id="constellation-container">
+      <div class="memory-star" style="top: 22%; left: 18%;" data-id="1">
+        <div class="star-core"></div>
+        <div class="star-pulse"></div>
+        <span class="star-tag">🌟 «А помнишь...»</span>
+      </div>
+
+      <div class="memory-star" style="top: 26%; right: 18%;" data-id="2">
+        <div class="star-core"></div>
+        <div class="star-pulse"></div>
+        <span class="star-tag">🖤 «Sevildiğini bilmek»</span>
+      </div>
+
+      <div class="memory-star" style="top: 68%; left: 20%;" data-id="3">
+        <div class="star-core"></div>
+        <div class="star-pulse"></div>
+        <span class="star-tag">✨ Shirin Koʻrinishing</span>
+      </div>
+
+      <div class="memory-star" style="top: 70%; right: 20%;" data-id="4">
+        <div class="star-core"></div>
+        <div class="star-pulse"></div>
+        <span class="star-tag">💖 Yurakdagi Qadrdonim</span>
+      </div>
+
+      <div class="memory-star" style="top: 48%; left: 7%;" data-id="5">
+        <div class="star-core"></div>
+        <div class="star-pulse"></div>
+        <span class="star-tag">🥺 «Ya skuchayu...»</span>
+      </div>
+
+      <div class="memory-star" style="top: 46%; right: 7%;" data-id="6">
+        <div class="star-core"></div>
+        <div class="star-pulse"></div>
+        <span class="star-tag">💫 Abadiy Vaʼda</span>
+      </div>
+    </div>
+
+    <!-- Shooting Star Notification -->
+    <div id="wish-popup" class="wish-toast hidden">
+      <div class="wish-icon">🌠</div>
+      <div class="wish-content">
+        <h4>Yulduz Uchdi! ✨</h4>
+        <p id="wish-text">Tezda niyat qil, men seni doim baxtli qilishga vaʼda beraman!</p>
+      </div>
+    </div>
+
+    <!-- Quick Mood / Compliment Button Floating -->
+    <div class="bottom-actions">
+      <button id="compliment-btn" class="glass-pill glow-pill">
+        <span>💝 Diloshga shirin soʻz</span>
+      </button>
+      <button id="reasons-btn" class="glass-pill">
+        <span>✨ 100 ta sabab</span>
+      </button>
+      <button id="qr-bottom-btn" class="glass-pill qr-pill">
+        <span>📲 QR Kod</span>
+      </button>
+    </div>
+  </main>
+
+  <!-- Memory Modal Popup -->
+  <div id="memory-modal" class="modal-overlay hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card glass-panel">
+      <button class="close-modal" id="modal-close">&times;</button>
+      
+      <div class="polaroid-wrapper">
+        <div class="polaroid-frame" id="polaroid-frame">
+          <div class="image-box">
+            <img id="modal-img" src="assets/photo1.png" alt="Xotira surati" onerror="this.style.display='none'; document.getElementById('photo-placeholder').style.display='flex';">
+            <div class="photo-placeholder" id="photo-placeholder">
+              <span class="placeholder-icon">📸</span>
+              <p>Bizning maxsus rasmimiz</p>
+            </div>
+          </div>
+          <div class="polaroid-caption" id="modal-caption">31-May • Goʻzal kun</div>
+        </div>
+      </div>
+
+      <div class="modal-text-content">
+        <span class="modal-badge" id="modal-badge">🌟 XOTIRA #1</span>
+        <h2 class="modal-heading" id="modal-title">Ilk Tanishgan Kunimiz</h2>
+        <div class="modal-body-text" id="modal-desc">
+          Oʻsha kun hayotimda yangi va eng yorqin sahifa ochilgan edi...
+        </div>
+        <div class="modal-action-row">
+          <button class="like-btn" id="like-memory-btn">
+            <span class="heart">❤️</span> <span id="like-count">Cheksiz Sevgi</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Romantic Love Letter Modal -->
+  <div id="letter-modal" class="modal-overlay hidden">
+    <div class="modal-backdrop"></div>
+    <div class="envelope-container">
+      <button class="close-modal white-close" id="letter-close">&times;</button>
+      
+      <div class="letter-paper">
+        <div class="letter-stamp">🌹</div>
+        <div class="letter-header">
+          <h3>Mening Yulduzim Diloshga 💌</h3>
+          <span class="letter-date">31-Maydan buyon va abadiy...</span>
+        </div>
+        <div class="letter-content">
+          <p>Assalomu alaykum, mening eng shirin va qadrli insonim Diloshim!</p>
+          <p>Ushbu kichik galaktikani faqat sen uchun yaratdim. Chunki sening tabassuming men uchun butun koinotdan ham goʻzalroq va qimmatliroq.</p>
+          <p>Har safar koʻzlaringga qaraganimda yoki ovozingni eshitganimda hayotim yanada yorugʻ boʻladi. Sen bilan oʻtgan har bir kun, har bir daqiqa men uchun eng bebaho sovgʻa.</p>
+          <p>Yoningda boʻlish, seni kuldirish va doimo baxtli qilish — mening eng katta niyatim. Seni juda yaxshi koʻraman va doim yoningda boʻlaman! 💖✨</p>
+        </div>
+        <div class="letter-sign">
+          <span>Doim sen bilan birga,</span>
+          <span class="handwrite">Sening insoning ❤️</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR Code Modal -->
+  <div id="qr-modal" class="modal-overlay hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card qr-card glass-panel">
+      <button class="close-modal" id="qr-close">&times;</button>
+      
+      <div class="qr-header">
+        <div class="qr-badge">✨ DILOSH GALAXY PASS ✨</div>
+        <h2 class="qr-title">Telefon orqali kirish QR Kodi 📱</h2>
+        <p class="qr-desc">Kamerangizni ushbu QR kodga qarating va toʻgʻridan-toʻgʻri oʻz galaktikangizga kiring!</p>
+      </div>
+
+      <div class="qr-code-box">
+        <div class="qr-image-wrapper">
+          <img id="qr-image" src="" alt="Dilosh Galaxy QR Code">
+        </div>
+        <div class="qr-glow-ring"></div>
+      </div>
+
+      <div class="qr-link-box">
+        <input type="text" id="share-link-input" readonly value="">
+        <button id="copy-link-btn" class="copy-btn">Nusxalash 📋</button>
+      </div>
+
+      <div class="qr-tip">
+        <span>💡 Ushbu QR kodni rasm qilib saqlab, Diloshga Telegram/Instagram orqali yuborishingiz yoki sovgʻa qutisiga chop etib qoʻyishingiz mumkin!</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio Element -->
+  <audio id="bg-audio" loop preload="auto">
+    <source src="assets/romantic_music.mp3" type="audio/mp3">
+  </audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
